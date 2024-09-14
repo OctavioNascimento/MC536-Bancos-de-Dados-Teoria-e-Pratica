@@ -1,0 +1,108 @@
+0.
+CREATE TABLE atleta (
+ id VARCHAR(50) PRIMARY KEY,
+ nome VARCHAR(50),
+  pais VARCHAR(50),
+  ano_nascimento INTEGER,
+  esporte VARCHAR(50),
+  medalha VARCHAR(6) CHECK (medalha in ('Bronze', 'Prata', 'Ouro')),
+  edicao_olimpiada INTEGER);
+
+1.
+INSERT INTO atleta (id, nome, pais, ano_nascimento, esporte, medalha, edicao_olimpiada) VALUES
+(1, 'Beatriz Souza', 'Brasil', 1998, 'Judô', 'Ouro', 2024),
+(2, 'Rebeca Andrade', 'Brasil', 1999, 'Ginástica Artística', 'Ouro', 2024),
+(3, 'Ana Patrícia Ramos', 'Brasil', 1997, 'Vôlei de Praia', 'Ouro', 2024),
+(4, 'Caio Bonfim', 'Brasil', 1991, 'Atletismo', 'Prata', 2024),
+(5, 'Willian Lima', 'Brasil', 2000, 'Judô', 'Prata', 2024),
+(6, 'Rebeca Andrade', 'Brasil', 1999, 'Ginástica Artística', 'Prata', 2024),
+(7, 'Rebeca Andrade', 'Brasil', 1999, 'Ginástica Artística', 'Prata', 2024),
+(8, 'Tatiana Weston-Webb', 'Brasil', 1996, 'Surfe', 'Prata', 2024),
+(9, 'Isaquias Queiroz', 'Brasil', 1994, 'Canoagem', 'Prata', 2024),
+(10, 'Brasil', 'Brasil', NULL, 'Futebol Feminino', 'Prata', 2024),
+(11, 'Larissa Pimenta', 'Brasil', 1999, 'Judô', 'Bronze', 2024),
+(12, 'Rayssa Leal', 'Brasil', 2008, 'Skate Street', 'Bronze', 2024),
+(13, 'Bia Ferreira', 'Brasil', 1992, 'Boxe', 'Bronze', 2024),
+(14, 'Gabriel Medina', 'Brasil', 1993, 'Surfe', 'Bronze', 2024),
+(15, 'Augusto Akio', 'Brasil', 2000, 'Skate Park', 'Bronze', 2024),
+(16, 'Edival Pontes', 'Brasil', 1997, 'Taekwondo', 'Bronze', 2024),
+(17, 'Alison dos Santos', 'Brasil', 2000, 'Atletismo', 'Bronze', 2024),
+(18, 'Brasil', 'Brasil', NULL, 'Vôlei Feminino', 'Bronze', 2024),
+(19, 'Laura Pigossi', 'Brasil', 1994, 'Tênis', NULL, 2024),
+(20, 'Amanda Schott', 'Brasil', 1996, 'Levantamento de Peso', NULL, 2024);
+ 
+2.
+UPDATE atleta
+SET nome = 'Disputa por equipes'
+WHERE nome = 'Brasil'
+
+3.
+DELETE from atleta
+WHERE ano_nascimento is NULL
+
+4.
+SELECT DISTINCT nome 
+FROM atleta
+
+5.
+SELECT DISTINCT nome 
+FROM atleta 
+WHERE ano_nascimento = 1999
+
+6.
+SELECT nome, esporte 
+FROM atleta 
+WHERE medalha = 'Ouro'
+
+7.
+SELECT DISTINCT nome
+FROM atleta 
+WHERE medalha in ('Bronze','Prata')
+
+8.
+SELECT nome
+FROM atleta 
+WHERE medalha = 'Ouro' AND nome NOT IN (SELECT nome FROM atleta WHERE medalha in ('Bronze','Prata'))
+
+9.
+SELECT nome
+FROM atleta 
+WHERE esporte = 'Judô' and medalha is not null
+
+10.
+SELECT nome, medalha, esporte
+FROM atleta 
+WHERE edicao_olimpiada = 2024 and ano_nascimento > 1999
+
+11.
+SELECT nome, ano_nascimento
+FROM atleta 
+WHERE nome LIKE 'A%'
+
+12.
+SELECT nome, ano_nascimento
+FROM atleta 
+WHERE nome LIKE '%e'
+
+13.
+SELECT DISTINCT esporte
+FROM atleta 
+WHERE esporte LIKE '% %'
+
+14.
+SELECT DISTINCT esporte
+FROM atleta 
+WHERE pais = 'Brasil' and medalha is not null
+
+15.
+Esta consulta retorna o país, o esporte e a edição da olimpíada que não houve medalhas no ano de 2024.
+
+16.
+Há uma união entre os resultados de países, esportes e medalhas cujo as medalhas obtidas foram de Ouro ou de Prata. A diferença entre as consultas é que na primeira foi utilizada somente o operador UNION, que remove duplicados após a junção e na segunda consulta foi utilizado o operador UNION ALL, portanto possui valores duplicados.
+
+17.
+Esta query não atende pois há uma falha na verificação do ano do atleta, que lista os nascidos após o ano 2000 ao invés dos nascidos exatamente no ano de 1999, a query também falha em verificar se o atleta é medalhista. A query corrigida seria:
+
+SELECT DISTINCT nome
+FROM atleta
+WHERE ano_nascimento = 1999 and medalha is not null
